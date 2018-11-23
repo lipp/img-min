@@ -1,0 +1,45 @@
+{
+  "name": "fit-text-webcomponent",
+  "version": "1.1.0",
+  "description": "A minimal fit-text web-component / custom-element",
+  "keywords": [
+    "fit",
+    "web component",
+    "custom element",
+    "text",
+    "responsive",
+    "width"
+  ],
+  "main": "dist/index.min.js",
+  "files": [
+    "dist/index.min.js"
+  ],
+  "scripts": {
+    "test": "npm run build && jest && bundlesize",
+    "build": "uglifyjs --compress --mangle --output ./dist/index.min.js -- ./src/index.js",
+    "prettier": "prettier --write index.js __tests__/index.js && js-beautify -r examples/*.html",
+    "dev": "nodemon --exec \"npm run build\" --watch ./src & live-server --port=8082 --ignore=./src"
+  },
+  "repository": "github:lipp/fit-text",
+  "author": "Gerhard Preuss",
+  "license": "MIT",
+  "devDependencies": {
+    "bundlesize": "^0.17.0",
+    "http-server": "^0.11.1",
+    "jest": "^23.6.0",
+    "jest-cli": "^23.6.0",
+    "js-beautify": "^1.8.6",
+    "live-server": "^1.2.0",
+    "nodemon": "^1.18.4",
+    "prettier": "^1.14.3",
+    "puppeteer": "^1.9.0",
+    "uglify-es": "^3.3.9"
+  },
+  "dependencies": {},
+  "bundlesize": [
+    {
+      "path": "./dist/index.min.js",
+      "maxSize": "600 byte"
+    }
+  ]
+}
