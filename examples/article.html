@@ -49,9 +49,14 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         }
 
-        img-min[preview] img {
-            top: -40;
+        img-min[preview]::part(img) {
+            border: 10px solid;
         }
+
+        img-min::part(img) {
+            border: 10px solid red;
+        }
+
 
         p {
             line-height: 1.6;
