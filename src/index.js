@@ -1,16 +1,34 @@
 const html = String.raw
+let speed
+let kbps
 const getIscaleUrl = (e, t, i, s, dt) => {
   if (0) {
     return window.imgMinUrl
   }
-  console.log('dt', dt)
-  if (dt) {
-    if (dt > 600) {
+  if (!kbps) {
+    kbps = 1
+    const time = new Date()
+    const url = `https://img-scale.now.sh?format=${t}&width=${
+      (i = Math.floor(i)) > 50 ? i - (i % 50) : i - (i % 5)
+    }&url=${encodeURIComponent(e)}&quality=${s}`
+    fetch(url, { cache: 'reload', mode: 'no-cors', method: 'HEAD' }).then(
+      resp => {
+        console.log(Date.now() - time)
+        speed = Date.now() - time
+        console.log('asd', resp)
+        // return resp.blob()
+      }
+    )
+  }
+
+  console.log('dtr', dt, speed)
+  if (speed) {
+    if (speed > 1000) {
       console.log(1)
       s = 5
-    } else if (dt > 300) {
+    } else if (speed > 300) {
       console.log(2)
-      s = s / 3
+      s = 20
     }
     console.log(s)
   }
@@ -106,8 +124,11 @@ customElements.define(
         mode: 'open'
       })
       shadowRoot.innerHTML = template
-      this.picture = shadowRoot.querySelector('picture')
 
+      this.picture = shadowRoot.querySelector('picture')
+      this.picture.onloadedmetadata = e => {
+        console.log('meta', e)
+      }
       this.img = this.shadowRoot.querySelector('img')
       const onHighresLoaded = () => {
         this.removeAttribute('preview')
