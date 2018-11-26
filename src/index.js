@@ -12,6 +12,7 @@ const getUrl = ({ format, url, width, quality, isPreview }) => {
   if (isPreview) {
     width = width / 7
   }
+
   width = Math.floor(width)
   width = width > 50 ? width - (width % 30) : width - (width % 5)
   return `${getImgScaleUrl({
@@ -71,16 +72,16 @@ const template = html`
       bottom: 0;
       height: 100%;
       filter: blur(var(--preview-blur));
-      transform: scale3d(1.03, 1.03, 1);
+      transform: scale3d(1.1, 1.1, 1);
       transition: all 0.7s ease-in-out;
     }
     :host {
       display: block;
+      background: #f4f4f4;
     }
 
     :host([preview]),
     :host([loaded]) {
-      background: none;
     }
 
     :host([preview]) img {
@@ -205,7 +206,6 @@ customElements.define(
 
     loadPreview(width) {
       this.isPreview = true
-      console.log('preiew')
       pendingPreviews[this.src] = true
       this.width = width
     }
@@ -241,7 +241,6 @@ customElements.define(
         '--preview-blur',
         `${Math.floor(width / 20)}px`
       )
-      console.log(this.quality, this.getAttribute('quality'))
       if (height === 0) {
         console.warn(
           'img-min: element has height=0 and will never be visible',
