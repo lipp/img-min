@@ -142,9 +142,8 @@
       in respect to every client. This can save clients easily hundreds or thousands
       of KB.
     </p>
-    <p>To use <code>&lt;img-min&gt;</code> a CDN backed image resize/reformat microservice
-      is required. To build this demo, I created my own with the help of <a href="https://zeit.co">Zeit's now</a>
-      in less than 5o lines of <a href="https://github.com/lipp/img-scale">code</a>.
+    <p><code>&lt;img-min&gt;</code> plays best with a CDN backed image resize/reformat microservice.
+      Fortunately it comes with a freely hosted implenetation.
     </p>
 
 
@@ -172,6 +171,18 @@
   style="--aspect-ratio="15/10"
   &gt;
 &lt;/img-min&gt;</code></pre>
+    <p>
+      It is used very similar to the good old <code>&lt;img&gt;</code> tag.
+    </p>
+    <p>
+      A <code>src</code> attribute to the "big" original image must be specified.
+    </p>
+    <p>
+      The CSS variable (custom property) <code>--aspect-ratio</code> is recommended
+      to prevent page layout jumping and to leverage visibility checking and
+      thus lazy loading. Every other means to make the image have a certain height
+      is also ok.
+    </p>
     <h3>How / Image CDNs</h3>
     <p>To use <code>&lt;img-min&gt;</code> a CDN backed image resize/reformat microservice
       is required. There are many of these services out there and all of them
