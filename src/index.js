@@ -1,40 +1,35 @@
 const html = String.raw
-let speed
-let kbps
-const getIscaleUrl = (e, t, i, s, dt) => {
-  if (0) {
-    return window.imgMinUrl
-  }
-  if (!kbps) {
-    kbps = 1
-    const time = new Date()
-    const url = `https://img-scale.now.sh?format=${t}&width=${
-      (i = Math.floor(i)) > 50 ? i - (i % 50) : i - (i % 5)
-    }&url=${encodeURIComponent(e)}&quality=${s}`
-    fetch(url, { cache: 'reload', mode: 'no-cors', method: 'HEAD' }).then(
-      resp => {
-        console.log(Date.now() - time)
-        speed = Date.now() - time
-        console.log('asd', resp)
-        // return resp.blob()
-      }
-    )
-  }
 
-  console.log('dtr', dt, speed)
-  if (speed) {
-    if (speed > 1000) {
-      console.log(1)
-      s = 5
-    } else if (speed > 300) {
-      console.log(2)
-      s = 20
-    }
-    console.log(s)
+const getImgScaleUrl = ({ url, width, quality, format }) =>
+  `https://img-scale.now.sh?format=${format}&width=${width}&quality=${quality}&url=${encodeURIComponent(
+    url
+  )}`
+
+const getUrl = ({ format, url, width, quality, isPreview }) => {
+  if (0) {
+    return window.imgMin.getSrcset({ url, width, quality, isPreview, format })
   }
-  return `https://img-scale.now.sh?format=${t}&width=${
-    (i = Math.floor(i)) > 50 ? i - (i % 50) : i - (i % 5)
-  }&url=${encodeURIComponent(e)}&quality=${s}`
+  if (isPreview) {
+    width = width / 7
+  }
+  width = Math.floor(width)
+  width = width > 50 ? width - (width % 30) : width - (width % 5)
+  return `${getImgScaleUrl({
+    url,
+    width,
+    quality,
+    format
+  })} 1x,${getImgScaleUrl({
+    url,
+    width: Math.floor(width * 1.3),
+    quality: Math.min(quality * 1.1, 100),
+    format
+  })} 2x, ${getImgScaleUrl({
+    url,
+    width: Math.floor(width * 1.5),
+    quality: Math.min(quality * 1.3, 100),
+    format
+  })} 3x`
 }
 let invisibles = []
 
@@ -64,8 +59,8 @@ const template = html`
 
     picture {
       overflow: hidden;
-      padding-top: 66%;
       position: relative;
+      padding-bottom: calc(100% / (var(--aspect-ratio)));
     }
     img {
       position: absolute;
@@ -74,14 +69,13 @@ const template = html`
       left: 0;
       right: 0;
       bottom: 0;
-      filter: blur(15px);
-      transform: scale(1.03);
+      height: 100%;
+      filter: blur(var(--preview-blur));
+      transform: scale3d(1.03, 1.03, 1);
       transition: all 0.7s ease-in-out;
     }
     :host {
       display: block;
-      background: #fffaf4;
-      overflow: hidden;
     }
 
     :host([preview]),
@@ -96,18 +90,15 @@ const template = html`
     :host([loaded]) img {
       opacity: 1;
       filter: blur(0px);
-      transform: scale(1);
+      transform: scale3d(1, 1, 1);
     }
   </style>
 `
-const getPaddingTop = e => {
-  const [, t, i] = e.match(/([0-9]*\.?[0-9]*)\/([0-9]*\.?[0-9]*)/),
-    s = parseFloat(t)
-  return `${(100 * parseFloat(i)) / s}%`
-}
-let postponedHighres = []
+
+let postponed = []
 const pendingPreviews = {}
 let isOnScrollInit
+
 customElements.define(
   'img-min',
   class extends HTMLElement {
@@ -126,24 +117,20 @@ customElements.define(
       shadowRoot.innerHTML = template
 
       this.picture = shadowRoot.querySelector('picture')
-      this.picture.onloadedmetadata = e => {
-        console.log('meta', e)
-      }
       this.img = this.shadowRoot.querySelector('img')
       const onHighresLoaded = () => {
         this.removeAttribute('preview')
         this.setAttribute('loaded', '')
         this.img.onload = null
       }
-      const onPreviewLoaded = e => {
-        console.log(e)
-        this.previewLoadTime = Date.now() - this.previewStartTime
-        delete pendingPreviews[this.getAttribute('src')]
+      const onPreviewLoaded = () => {
+        this.isPreview = false
+        delete pendingPreviews[this.src]
         this.setAttribute('preview', '')
-        postponedHighres.push(() => this.resize())
+        postponed.push(() => this.resize())
         if (Object.keys(pendingPreviews).length === 0) {
-          postponedHighres.reverse().forEach(e => e())
-          postponedHighres = []
+          postponed.reverse().forEach(e => e())
+          postponed = []
         }
         this.img.onload = onHighresLoaded
       }
@@ -166,7 +153,6 @@ customElements.define(
 
     set quality(quality) {
       this.setAttribute('quality', quality)
-      console.log('q', quality)
       this.updateSrcset()
     }
 
@@ -180,34 +166,28 @@ customElements.define(
       this[name] = newValue
     }
 
+    getSrcset(format) {
+      console.log(this.quality)
+      return getUrl({
+        url: this.src,
+        format,
+        width: this.width,
+        height: this.height,
+        quality: this.quality,
+        isPreview: this.isPreview
+      })
+    }
+
     updateSrcset() {
       if (!this.visible) {
         return
       }
       this.jpeg =
         this.jpeg || this.shadowRoot.querySelector('source[type="image/jpeg"]')
-      this.jpeg.srcset = getIscaleUrl(
-        this.src,
-        'jpeg',
-        this.width,
-        this.quality,
-        this.previewLoadTime
-      )
+      this.jpeg.srcset = this.getSrcset('jpeg')
       this.webp =
         this.webp || this.shadowRoot.querySelector('source[type="image/webp"]')
-      this.webp.srcset = `${getIscaleUrl(
-        this.src,
-        'webp',
-        this.width,
-        this.quality,
-        this.previewLoadTime
-      )} 1x,${getIscaleUrl(
-        this.src,
-        'webp',
-        this.width * 1.3,
-        this.quality,
-        this.previewLoadTime
-      )} 2x`
+      this.webp.srcset = this.getSrcset('webp')
     }
 
     get width() {
@@ -222,19 +202,22 @@ customElements.define(
     disconnectedCallback() {
       removeEventListener('resize', this.resize)
     }
+
     loadPreview(width) {
+      this.isPreview = true
+      console.log('preiew')
       pendingPreviews[this.src] = true
-      this.previewStartTime = Date.now()
-      this.width = Math.max(10, width / 7)
-      console.log('comple', this.img.complete)
+      this.width = width
     }
+
     checkVisibility() {
       const dist = parseInt(this.getAttribute('lazy-dist')) || 100
-      const { top, bottom, width } = this.getBoundingClientRect()
+      const { top, bottom, width, height } = this.img.getBoundingClientRect()
       const isAbove = bottom < -dist
       const isBelow = top > window.innerHeight + dist
       if (!isAbove && !isBelow && !this.visible) {
         this.visible = true
+        this.height = height
         this.loadPreview(width)
       }
     }
@@ -244,22 +227,39 @@ customElements.define(
       }
       cancelAnimationFrame(this.af)
       this.af = requestAnimationFrame(() => {
-        const { width } = this.picture.getBoundingClientRect()
+        const { width, height } = this.img.getBoundingClientRect()
         if (width > this.maxWidth) {
           this.maxWidth = width
+          this.height = height
           this.width = width
         }
       })
     }
     connectedCallback() {
-      const e = this.getAttribute('aspect')
-      e &&
-        ((this.img.style.height = '100%'),
-        (this.img.style.objectFit = 'cover'),
-        (this.picture.style.paddingTop = getPaddingTop(e))),
-        setTimeout(() => {
-          this.checkVisibility()
-        }, 100)
+      const { width, height } = this.img.getBoundingClientRect()
+      this.img.style.setProperty(
+        '--preview-blur',
+        `${Math.floor(width / 20)}px`
+      )
+      console.log(this.quality, this.getAttribute('quality'))
+      if (height === 0) {
+        console.warn(
+          'img-min: element has height=0 and will never be visible',
+          this
+        )
+        console.warn(
+          'img-min: it is recommend to use --aspect-ratio to all images'
+        )
+      }
+      const aspect = this.getAttribute('a2spect')
+      if (aspect) {
+        this.img.style.height = '100%'
+        this.img.style.objectFit = 'cover'
+        this.picture.style.paddingTop = getPaddingTop(aspect)
+      }
+      setTimeout(() => {
+        this.checkVisibility()
+      }, 100)
     }
   }
 )

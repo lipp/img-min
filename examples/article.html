@@ -1,256 +1,253 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script>
-        imgMinUrl = (url, format, width, quality) => {
-            width = Math.floor(width)
-            const widthM = width - (width % 50)
+      imgMinUrl = (url, format, width, quality) => {
+        width = Math.floor(width)
+        const widthM = width - (width % 50)
 
-            //const heightM = height - height % 50
-            // return `https://iscale-lxpwswbzug.now.sh?width=${widthM}&url=${encodeURIComponent(url)}`
-            return `https://iscale-zwuctzwbbh.now.sh?format=${format}&width=${widthM}&url=${encodeURIComponent(
+        //const heightM = height - height % 50
+        // return `https://iscale-lxpwswbzug.now.sh?width=${widthM}&url=${encodeURIComponent(url)}`
+        return `https://iscale-zwuctzwbbh.now.sh?format=${format}&width=${widthM}&url=${encodeURIComponent(
           url
         )}&quality=${quality}`
-        }
+      }
     </script>
     <script src="../dist/index.min.js"></script>
     <style>
-        .hero img-min {
-            margin: 20px 0;
-        }
+      .hero img-min {
+        margin: 20px 0;
+        --aspect-ratio: 1189/792;
+      }
 
-        .hero {}
+      img-min {
+        --aspect-ratio: 3/2;
+      }
 
-        q {
-            color: #fb49f9;
-            margin-top: 2em;
-            margin-bottom: 2em;
-            font-style: italic;
-            font-family: cursive;
-            padding-left: 2em;
-            font-size: 1.4em;
-        }
+      .hero {
+      }
 
-        q::before {
-            content: '"';
-        }
+      q {
+        color: #fb49f9;
+        margin-top: 2em;
+        margin-bottom: 2em;
+        font-style: italic;
+        font-family: cursive;
+        padding-left: 2em;
+        font-size: 1.4em;
+      }
 
-        q::after {
-            content: '"';
-        }
+      q::before {
+        content: '"';
+      }
 
-        .list {
-            margin-top: 3em;
-            margin-bottom: 3em;
-            display: grid;
-            grid-gap: 2vw;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        }
+      q::after {
+        content: '"';
+      }
 
-        img-min[preview]::part(img) {
-            border: 10px solid;
-        }
+      .list {
+        margin-top: 3em;
+        margin-bottom: 3em;
+        display: grid;
+        grid-gap: 2vw;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      }
 
-        img-min::part(img) {
-            border: 10px solid red;
-        }
+      img-min[preview]::part(img) {
+        border: 10px solid;
+      }
 
+      img-min::part(img) {
+        border: 10px solid red;
+      }
 
-        p {
-            line-height: 1.6;
-        }
+      p {
+        line-height: 1.6;
+      }
 
-        body>*:not(.hero) {
-            width: 90%;
-            max-width: 800px;
-            margin: 0 auto;
-        }
+      body > *:not(.hero) {
+        width: 90%;
+        max-width: 800px;
+        margin: 0 auto;
+      }
 
-        h1+h2 {
-            margin-top: 0;
-            color: gray;
-        }
+      h1 + h2 {
+        margin-top: 0;
+        color: gray;
+      }
 
-        h1 {
-            margin-top: 2em;
-            margin-bottom: 0.3em;
-        }
+      h3 {
+          font-size: 1.5rem;
+      }
 
-        body {
-            margin: 0;
-            font-size: 103%;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-                Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
+      h1 {
+        margin-top: 2em;
+        margin-bottom: 0.3em;
+      }
 
-        .bars {
-            display: flex;
-            height: 30vh;
-            justify-content: space-between;
-            margin: 0 -3vw;
-            font-size: 90%;
-        }
-
-        .bars .bar {
-            grid-row: 1 / -2;
-            background: #dcdac0 linear-gradient(to top, gold var(--h), transparent var(--h));
-            justify-self: center;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            justify-content: flex-end;
-            max-width: 100px;
-            margin: 0 3vw;
-            flex-grow: 1;
-            height: 100%;
-            text-align: center;
-        }
-
-        .bars span {
-            display: block;
-            box-sizing: border-box;
-            width: 100%;
-            padding-bottom: 20px;
-        }
+      body {
+        margin: 10vh 0;
+        font-size: 120%;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>Minimal images</h1>
     <h2>Tailormade images for each client</h2>
     <div class="hero">
-        <img-min aspect="1189/792" src="https://images.unsplash.com/photo-1542836780-7f74748c7562?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=9d889635475db8bcf1aca77a74dd9355&auto=format&fit=crop&w=1350&q=80">
-        </img-min>
+      <img-min
+        src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=9e2448175103d36c873e2511d112d339&auto=format&fit=crop&w=1350&q=80"
+        quality="80"
+      >
+      </img-min>
     </div>
     <div>
-        <p>
-            This describes an easy way to implement an <code>&lt;img-min&gt;</code> web-component which:
-            <ul>
-                <li>
-                    loads a responsive minimal image
-                </li>
-                <li>
-                    loads lazy (Medium effect)
-                </li>
-                <li>
-                    loads WebP or JPEG
-                </li>
-            </ul>
-        </p>
-        <p>
-            Page size is important for many respects and will probably stay
-            important forever. Images often times make up the biggest part of a
-            website's data delivered to the client. This article focuses on methods
-            to deliver images in sizes and formats which are best for each client
-            based on its viewport (screensize).
-        </p>
-        <p>
-            The hero image you see above varies between 8kb (iPhone 5/SE size) to
-            113kb (typical Desktop) to have a "good" visual impression using WebP.
-        </p>
-        <div class="bars">
-            <div class="bar" style="--h: 6.9%">
-                <span>7.9kb</span> <label>320px (iPhone 5/SE)</label>
-            </div>
-            <div class="bar" style="--h: 11.8%">
-                <span>13.3kb</span> <label>414px (iPhone 6/7/8 Plus)</label>
-            </div>
-            <div class="bar" style="--h: 37.5%">
-                <span>42.4kb</span> <label>768px (iPad)</label>
-            </div>
-            <div class="bar" style="--h: 100%">
-                <span>113kb</span> <label>1400px (Desktop)</label>
-            </div>
-        </div>
-        <p>
-            Delivering minimal images isn't trivial. This usually involves uploading
-            and serving them in different sizes over a CDN and writing media queries
-            for certain breakpoints. As developer and/or content contributor it can
-            be easy to forget to do all the steps required.
-        </p>
-        <p>
-            Further, different clients might support different images formats. WebP
-            for instance offers "better" compression but is not supported by all
-            browsers. This can multiply the effort.
-        </p>
-        <p>
-            Things get more complicated when RWD layouts causes images to get
-            displayed larger on smaller devices. The images below get stacked on
-            smaller devices and might actually require a bigger image to look crisp.
-            Handling this with media queries can get messy.
-        </p>
-        <div class="list">
-            <img-min src="https://images.unsplash.com/photo-1484599379766-aa5e119b0066?ixlib=rb-0.3.5&s=dc0107a6f996194f0321d9ee2ea95112&auto=format&fit=crop&w=1350&q=80">
-            </img-min>
+      <h3>WTF</h3>
+      <p>This is a demo page for <code>&lt;img-min&gt;</code> web-component.</p>
 
-            <img-min src="https://images.unsplash.com/photo-1518670921540-7c4e09a4408e?ixlib=rb-0.3.5&s=508cfd3484756ce9bfedc31496131e38&auto=format&fit=crop&w=1350&q=80">
-            </img-min>
-        </div>
-        <p>
-            Contrary to popular belief, Lorem Ipsum is not simply random text. It
-            has roots in a piece of classical Latin literature from 45 BC, making it
-            over 2000 years old. Richard McClintock, a Latin professor at
-            Hampden-Sydney College in Virginia, looked up one of the more obscure
-            Latin words, consectetur, from a Lorem Ipsum passage, and going through
-            the cites of the word in classical literature, discovered the
-            undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33
-            of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by
-            Cicero, written in 45 BC. This book is a treatise on the theory of
-            ethics, very popular during the Renaissance. The first line of Lorem
-            Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section
-            1.10.32.
-        </p>
+      <h3>Usage</h3>
+      <p>
+        <code>
+          &lt;script
+          src="https://unpkg.com/@lipp/img-min@0.0.1/dist/index.min.js"&gt;&lt;/script&gt;
+          <br />
+          &lt;img-min src="https://images.unsplash.com/..."
+          style="--aspect-ratio="15/10"&gt;&lt;/img-min&gt;
+        </code>
+      </p>
 
-        <div class="hero">
-            <img-min src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=9e2448175103d36c873e2511d112d339&auto=format&fit=crop&w=1350&q=80">
-            </img-min>
-        </div>
+      <p></p>
+      <h3>Features</h3>
+      <ul>
+        <li>responsive</li>
+        <li>lazy loading</li>
+        <li>preview image / thumbnails</li>
+        <li>WebP / JPEG</li>
+        <li>dissolve effect</li>
+        <li>supports every image CDN</li>
+      </ul>
+    <div class="list">
+      <img-min
+        src="https://images.unsplash.com/photo-1508144753681-9986d4df99b3?ixlib=rb-0.3.5&s=1d10d3fecaf170c5d764bd8e564eecd9&auto=format&fit=crop&w=1350&q=80"
+      >
+      </img-min>
+
+      <img-min
+        src="https://images.unsplash.com/photo-1506318164473-2dfd3ede3623?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d7aca7e915a70f426aa75aacaa56c6d0&auto=format&fit=crop&w=1350&q=80"
+      >
+    </div>
+      <h3>Why</h3>
+      <p>
+        Page size is important for many respects and will probably stay
+        important forever. Images often times make up the biggest part of a
+        website's data delivered to the client. This article focuses on methods
+        to deliver images in sizes and formats which are best for each client
+        based on its viewport (screensize).
+      </p>
+      <p>
+        The hero image you see above varies between 8kb (iPhone 5/SE size) to
+        113kb (typical Desktop) to have a "good" visual impression using WebP.
+      </p>
+      <p>
+        Delivering minimal images isn't trivial. This usually involves uploading
+        and serving them in different sizes over a CDN and writing media queries
+        for certain breakpoints. As developer and/or content contributor it can
+        be easy to forget to do all the steps required.
+      </p>
+      <p>
+        Further, different clients might support different images formats. WebP
+        for instance offers "better" compression but is not supported by all
+        browsers. This can multiply the effort.
+      </p>
+      <p>
+        Things get more complicated when RWD layouts causes images to get
+        displayed larger on smaller devices. The images below get stacked on
+        smaller devices and might actually require a bigger image to look crisp.
+        Handling this with media queries can get messy.
+      </p>
+      <div class="list">
+        <img-min
+          src="https://images.unsplash.com/photo-1484599379766-aa5e119b0066?ixlib=rb-0.3.5&s=dc0107a6f996194f0321d9ee2ea95112&auto=format&fit=crop&w=1350&q=80"
+        >
+        </img-min>
+
+        <img-min
+          src="https://images.unsplash.com/photo-1518670921540-7c4e09a4408e?ixlib=rb-0.3.5&s=508cfd3484756ce9bfedc31496131e38&auto=format&fit=crop&w=1350&q=80"
+        >
+        </img-min>
+      </div>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. It
+        has roots in a piece of classical Latin literature from 45 BC, making it
+        over 2000 years old. Richard McClintock, a Latin professor at
+        Hampden-Sydney College in Virginia, looked up one of the more obscure
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through
+        the cites of the word in classical literature, discovered the
+        undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33
+        of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by
+        Cicero, written in 45 BC. This book is a treatise on the theory of
+        ethics, very popular during the Renaissance. The first line of Lorem
+        Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section
+        1.10.32.
+      </p>
+
+      <div class="hero">
+        <img-min
+          aspect=""
+          src="https://images.unsplash.com/photo-1542836780-7f74748c7562?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=9d889635475db8bcf1aca77a74dd9355&auto=format&fit=crop&w=1350&q=80"
+        >
+        </img-min>
+      </div>
     </div>
     <p>
-        There are many variations of passages of Lorem Ipsum available, but the
-        majority have suffered alteration in some form, by injected humour, or
-        randomised words which don't look even slightly believable. If you are
-        going to use a passage of Lorem Ipsum, you need to be sure there isn't
-        anything embarrassing hidden in the middle of text. All the Lorem Ipsum
-        generators on the Internet tend to repeat predefined chunks as necessary,
-        making this the first true generator on the Internet. It uses a dictionary
-        of over 200 Latin words, combined with a handful of model sentence
-        structures, to generate Lorem Ipsum which looks reasonable. The generated
-        Lorem Ipsum is therefore always free from repetition, injected humour, or
-        non-characteristic words etc.
+      There are many variations of passages of Lorem Ipsum available, but the
+      majority have suffered alteration in some form, by injected humour, or
+      randomised words which don't look even slightly believable. If you are
+      going to use a passage of Lorem Ipsum, you need to be sure there isn't
+      anything embarrassing hidden in the middle of text. All the Lorem Ipsum
+      generators on the Internet tend to repeat predefined chunks as necessary,
+      making this the first true generator on the Internet. It uses a dictionary
+      of over 200 Latin words, combined with a handful of model sentence
+      structures, to generate Lorem Ipsum which looks reasonable. The generated
+      Lorem Ipsum is therefore always free from repetition, injected humour, or
+      non-characteristic words etc.
     </p>
     <q>Lorem ipsum</q>
     <p id="foo">
-        There are many variations of passages of Lorem Ipsum available, but the
-        majority have suffered alteration in some form, by injected humour, or
-        randomised words which don't look even slightly believable. If you are
-        going to use a passage of Lorem Ipsum, you need to be sure there isn't
-        anything embarrassing hidden in the middle of text. All the Lorem Ipsum
-        generators on the Internet tend to repeat predefined chunks as necessary,
-        making this the first true generator on the Internet. It uses a dictionary
-        of over 200 Latin words, combined with a handful of model sentence
-        structures, to generate Lorem Ipsum which looks reasonable. The generated
-        Lorem Ipsum is therefore always free from repetition, injected humour, or
-        non-characteristic words etc.
+      There are many variations of passages of Lorem Ipsum available, but the
+      majority have suffered alteration in some form, by injected humour, or
+      randomised words which don't look even slightly believable. If you are
+      going to use a passage of Lorem Ipsum, you need to be sure there isn't
+      anything embarrassing hidden in the middle of text. All the Lorem Ipsum
+      generators on the Internet tend to repeat predefined chunks as necessary,
+      making this the first true generator on the Internet. It uses a dictionary
+      of over 200 Latin words, combined with a handful of model sentence
+      structures, to generate Lorem Ipsum which looks reasonable. The generated
+      Lorem Ipsum is therefore always free from repetition, injected humour, or
+      non-characteristic words etc.
     </p>
     <div class="list">
-        <img-min src="https://images.unsplash.com/photo-1508144753681-9986d4df99b3?ixlib=rb-0.3.5&s=1d10d3fecaf170c5d764bd8e564eecd9&auto=format&fit=crop&w=1350&q=80">
-        </img-min>
+      <img-min
+        src="https://images.unsplash.com/photo-1501254667263-b4867b4f7482?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=25029f01929d9b9fc974563e69c15393&auto=format&fit=crop&w=1350&q=80"
+      >
+      </img-min>
 
-        <img-min src="https://images.unsplash.com/photo-1506318164473-2dfd3ede3623?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d7aca7e915a70f426aa75aacaa56c6d0&auto=format&fit=crop&w=1350&q=80">
-        </img-min>
-        <img-min src="https://images.unsplash.com/photo-1501254667263-b4867b4f7482?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=25029f01929d9b9fc974563e69c15393&auto=format&fit=crop&w=1350&q=80">
-        </img-min>
-
-        <img-min src="https://images.unsplash.com/photo-1422004707501-e8dad229e17a?ixlib=rb-0.3.5&s=6cb641f77892c1e7fcc9611b8a600852&auto=format&fit=crop&w=1353&q=80">
-        </img-min>
-        <img-min src="https://images.unsplash.com/photo-1443890923422-7819ed4101c0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=4f18acb8db93abc281f66dcfd2ad9e61&auto=format&fit=crop&w=1350&q=80">
-        </img-min>
-        <img-min src="https://images.unsplash.com/photo-1536040033249-c3308d07b033?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b22f3b47018472fc148c87615f0b1b3f&auto=format&fit=crop&w=1351&q=80">
-        </img-min>
+      <img-min
+        src="https://images.unsplash.com/photo-1422004707501-e8dad229e17a?ixlib=rb-0.3.5&s=6cb641f77892c1e7fcc9611b8a600852&auto=format&fit=crop&w=1353&q=80"
+      >
+      </img-min>
+      <img-min
+        src="https://images.unsplash.com/photo-1443890923422-7819ed4101c0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=4f18acb8db93abc281f66dcfd2ad9e61&auto=format&fit=crop&w=1350&q=80"
+      >
+      </img-min>
+      <img-min
+        src="https://images.unsplash.com/photo-1536040033249-c3308d07b033?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b22f3b47018472fc148c87615f0b1b3f&auto=format&fit=crop&w=1351&q=80"
+      >
+      </img-min>
     </div>
-</body>
-
+  </body>
 </html>

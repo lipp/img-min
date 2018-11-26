@@ -1,14 +1,14 @@
 {
-  "name": "fit-text-webcomponent",
-  "version": "1.1.0",
-  "description": "A minimal fit-text web-component / custom-element",
+  "name": "@lipp/img-min",
+  "version": "0.0.1",
+  "description": "A web component for minimal, responsive and lazy images for webp and jpeg",
   "keywords": [
-    "fit",
+    "img",
     "web component",
     "custom element",
-    "text",
+    "minimal",
     "responsive",
-    "width"
+    "lazy"
   ],
   "main": "dist/index.min.js",
   "files": [
@@ -20,7 +20,7 @@
     "prettier": "prettier --write index.js __tests__/index.js && js-beautify -r examples/*.html",
     "dev": "nodemon --exec \"npm run build\" --watch ./src & live-server --port=8082 --ignore=./src"
   },
-  "repository": "github:lipp/fit-text",
+  "repository": "github:lipp/img-min",
   "author": "Gerhard Preuss",
   "license": "MIT",
   "devDependencies": {
@@ -31,11 +31,5 @@
     "prettier": "^1.14.3",
     "uglify-es": "^3.3.9"
   },
-  "dependencies": {},
-  "bundlesize": [
-    {
-      "path": "./dist/index.min.js",
-      "maxSize": "600 byte"
-    }
-  ]
+  "dependencies": {}
 }
