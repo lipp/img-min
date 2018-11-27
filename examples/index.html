@@ -3,19 +3,13 @@
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script>
-    imgMinUrl = (url, format, width, quality) => {
-      width = Math.floor(width)
-      const widthM = width - (width % 50)
 
-      //const heightM = height - height % 50
-      // return `https://iscale-lxpwswbzug.now.sh?width=${widthM}&url=${encodeURIComponent(url)}`
-      return `https://iscale-zwuctzwbbh.now.sh?format=${format}&width=${widthM}&url=${encodeURIComponent(
-          url
-        )}&quality=${quality}`
-    }
-  </script>
   <script src="../dist/index.min.js"></script>
+  <script>
+      window.ImgMin.g2etCDNUrl = ({url, width, quality}) => {
+        return `https://atzvkhhlen.cloudimg.io/width/${Math.floor(60/quality * width)}/n/${url}`
+      }
+    </script>
   <style>
     .hero img-min {
       margin: 5vw 0;
@@ -132,7 +126,6 @@
     <p>This is a demo page for <code>&lt;img-min&gt;</code> web-component.
     </p>
     <p>
-
       Check it out on <a href="https://github.com/lipp/img-min">GitHub</a>.
     </p>
 
@@ -201,11 +194,22 @@
     <p>When an image (placeholder) gets visible, a hook is called with detailed information supposed to
       return a URL for this image.
     </p>
-    <pre><code>window.ImgMin.getUrl = ({url, width, height, quality, isPreview, format}) => {
+    <pre><code>window.ImgMin.getCDNUrl = ({
+  url, // original image url (high res)
+  width, // width on screen 
+  height, // height on screen
+  quality, // quality [0..100]
+  format // jpeg|webp
+    }) => {
   // return url to microservice / image CDN
 }</code></pre>
+    <p>This could be the code when using cloudimg.io:
+    </p>
+    <pre><code>window.ImgMin.getCDNUrl = ({url, width, quality}) => {
+  return `https://atzvkhhlen.cloudimg.io/width/${Math.floor(60/quality * width)}/n/${url}`
+}</code></pre>
     <p>
-      To build this demo, I created my own with CDN backed image microservice, <a href="https://github.com/lipp/img-scale">img-scale</a>.
+      To build this demo, I created my own CDN backed image microservice, <a href="https://github.com/lipp/img-scale">img-scale</a>.
       With the help of <a href="https://zeit.co">Zeit's now</a>
       in less than 5o lines of code. It is the default method and free to use until I get chopped
       by Zeit.co ;) .

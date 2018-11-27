@@ -5,30 +5,31 @@ const getImgScaleUrl = ({ url, width, quality, format }) =>
     url
   )}`
 
+window.ImgMin = {}
+
 const getUrl = ({ format, url, width, quality, isPreview }) => {
-  if (0) {
-    return window.imgMin.getSrcset({ url, width, quality, isPreview, format })
-  }
+  const getCDNUrl = window.ImgMin.getCDNUrl || getImgScaleUrl
   if (isPreview) {
     width = width / 7
+    // quality = 10
   }
 
   width = Math.floor(width)
   width = width > 50 ? width - (width % 30) : width - (width % 5)
-  return `${getImgScaleUrl({
+  return `${getCDNUrl({
     url,
     width,
     quality,
     format
-  })} 1x,${getImgScaleUrl({
+  })} 1x,${getCDNUrl({
+    url,
+    width: Math.floor(width * 1.1),
+    quality: Math.min(Math.floor(quality * 1.1), 100),
+    format
+  })} 2x, ${getCDNUrl({
     url,
     width: Math.floor(width * 1.3),
-    quality: Math.min(quality * 1.1, 100),
-    format
-  })} 2x, ${getImgScaleUrl({
-    url,
-    width: Math.floor(width * 1.5),
-    quality: Math.min(quality * 1.3, 100),
+    quality: Math.min(Math.floor(quality * 1.3), 100),
     format
   })} 3x`
 }
@@ -68,8 +69,6 @@ const template = html`
       opacity: 0;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
       height: 100%;
       filter: blur(var(--preview-blur));
       transform: scale3d(1.1, 1.1, 1);
@@ -80,7 +79,6 @@ const template = html`
       background: #f4f4f4;
     }
 
-    :host([preview]),
     :host([loaded]) {
     }
 
@@ -91,26 +89,48 @@ const template = html`
     :host([loaded]) img {
       opacity: 1;
       filter: blur(0px);
-      transform: scale3d(1, 1, 1);
+      transform: translateZ(0) scale3d(1, 1, 1);
     }
   </style>
 `
 
 let postponed = []
-const pendingPreviews = {}
-let isOnScrollInit
+const pending = {}
+let initOnce
+let isWebpSupported
+
+const init = async () => {
+  document.addEventListener('scroll', onScroll)
+  isWebpSupported = await testIsWebpSupported()
+}
+
+// from here: https://ourcodeworld.com/articles/read/630/how-to-detect-if-the-webp-image-format-is-supported-in-the-browser-with-javascript
+const testIsWebpSupported = async () => {
+  if (!createImageBitmap) {
+    return false
+  }
+
+  // Base64 representation of a white point image
+  const webpData =
+    'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoCAAEAAQAcJaQAA3AA/v3AgAA='
+
+  // Retrieve the Image in Blob Format
+  const blob = await fetch(webpData).then(r => r.blob())
+
+  // If the createImageBitmap method succeeds, return true, otherwise false
+  return createImageBitmap(blob).then(() => true, () => false)
+}
 
 customElements.define(
   'img-min',
   class extends HTMLElement {
     constructor() {
       super()
-      if (!isOnScrollInit) {
-        isOnScrollInit = true
-        document.addEventListener('scroll', onScroll)
+      if (!initOnce) {
+        initOnce = true
+        init()
       }
 
-      invisibles.push(this)
       this.maxWidth = 0
       const shadowRoot = this.attachShadow({
         mode: 'open'
@@ -119,25 +139,33 @@ customElements.define(
 
       this.picture = shadowRoot.querySelector('picture')
       this.img = this.shadowRoot.querySelector('img')
+
       const onHighresLoaded = () => {
         this.removeAttribute('preview')
         this.setAttribute('loaded', '')
         this.img.onload = null
       }
       const onPreviewLoaded = () => {
-        this.isPreview = false
-        delete pendingPreviews[this.src]
+        delete pending[this.src]
         this.setAttribute('preview', '')
+        if (this.isFirefox) {
+          this.removeAttribute('preview')
+          this.setAttribute('loaded', '')
+          this.img.onload = null
+          return
+        }
+        this.isPreview = false
+        this.img.onload = onHighresLoaded
         postponed.push(() => this.resize())
-        if (Object.keys(pendingPreviews).length === 0) {
+        if (Object.keys(pending).length === 0) {
           postponed.reverse().forEach(e => e())
           postponed = []
         }
-        this.img.onload = onHighresLoaded
       }
       this.img.onload = onPreviewLoaded
       this.resize = this.resize.bind(this)
       addEventListener('resize', this.resize)
+      invisibles.push(this)
     }
 
     static get observedAttributes() {
@@ -149,7 +177,7 @@ customElements.define(
     }
 
     get quality() {
-      return this.getAttribute('quality') || 50
+      return parseInt(this.getAttribute('quality'), 10) || 50
     }
 
     set quality(quality) {
@@ -168,7 +196,6 @@ customElements.define(
     }
 
     getSrcset(format) {
-      console.log(this.quality)
       return getUrl({
         url: this.src,
         format,
@@ -183,12 +210,21 @@ customElements.define(
       if (!this.visible) {
         return
       }
-      this.jpeg =
-        this.jpeg || this.shadowRoot.querySelector('source[type="image/jpeg"]')
-      this.jpeg.srcset = this.getSrcset('jpeg')
-      this.webp =
-        this.webp || this.shadowRoot.querySelector('source[type="image/webp"]')
-      this.webp.srcset = this.getSrcset('webp')
+      // Safari loads the same image once for each
+      // <source>.srcset attribute in <picture> even
+      // if the format (webp) is not supported.
+      // Thus the check is required!
+      if (isWebpSupported) {
+        this.webp =
+          this.webp ||
+          this.shadowRoot.querySelector('source[type="image/webp"]')
+        this.webp.srcset = this.getSrcset('webp')
+      } else {
+        this.jpeg =
+          this.jpeg ||
+          this.shadowRoot.querySelector('source[type="image/jpeg"]')
+        this.jpeg.srcset = this.getSrcset('jpeg')
+      }
     }
 
     get width() {
@@ -205,8 +241,8 @@ customElements.define(
     }
 
     loadPreview(width) {
-      this.isPreview = true
-      pendingPreviews[this.src] = true
+      this.isPreview = this.isFirefox ? false : true
+      pending[this.src] = true
       this.width = width
     }
 
@@ -236,10 +272,14 @@ customElements.define(
       })
     }
     connectedCallback() {
+      this.isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1
+      if (this.isFirefox) {
+        this.img.style.setProperty('transition-property', 'opacity')
+      }
       const { width, height } = this.img.getBoundingClientRect()
       this.img.style.setProperty(
         '--preview-blur',
-        `${Math.floor(width / 20)}px`
+        `${Math.floor(width / 18)}px`
       )
       if (height === 0) {
         console.warn(
@@ -250,15 +290,9 @@ customElements.define(
           'img-min: it is recommend to use --aspect-ratio to all images'
         )
       }
-      const aspect = this.getAttribute('a2spect')
-      if (aspect) {
-        this.img.style.height = '100%'
-        this.img.style.objectFit = 'cover'
-        this.picture.style.paddingTop = getPaddingTop(aspect)
-      }
       setTimeout(() => {
         this.checkVisibility()
-      }, 100)
+      }, 50)
     }
   }
 )
