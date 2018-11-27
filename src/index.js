@@ -5,10 +5,10 @@ const getImgScaleUrl = ({ url, width, quality, format }) =>
     url
   )}`
 
+window.ImgMin = {}
+
 const getUrl = ({ format, url, width, quality, isPreview }) => {
-  if (0) {
-    return window.imgMin.getSrcset({ url, width, quality, isPreview, format })
-  }
+  const getCDNUrl = window.ImgMin.getCDNUrl || getImgScaleUrl
   if (isPreview) {
     width = width / 7
     // quality = 10
@@ -16,17 +16,17 @@ const getUrl = ({ format, url, width, quality, isPreview }) => {
 
   width = Math.floor(width)
   width = width > 50 ? width - (width % 30) : width - (width % 5)
-  return `${getImgScaleUrl({
+  return `${getCDNUrl({
     url,
     width,
     quality,
     format
-  })} 1x,${getImgScaleUrl({
+  })} 1x,${getCDNUrl({
     url,
     width: Math.floor(width * 1.1),
     quality: Math.min(Math.floor(quality * 1.1), 100),
     format
-  })} 2x, ${getImgScaleUrl({
+  })} 2x, ${getCDNUrl({
     url,
     width: Math.floor(width * 1.3),
     quality: Math.min(Math.floor(quality * 1.3), 100),
