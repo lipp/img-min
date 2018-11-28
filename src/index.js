@@ -169,11 +169,20 @@ customElements.define(
     }
 
     static get observedAttributes() {
-      return ['src', 'quality']
+      return ['src', 'quality', 'alt']
     }
 
     get src() {
       return this.getAttribute('src')
+    }
+
+    get alt() {
+      return this.getAttribute('alt')
+    }
+
+    set alt(alt) {
+      this.setAttribute('alt', alt)
+      this.img.alt = alt
     }
 
     get quality() {

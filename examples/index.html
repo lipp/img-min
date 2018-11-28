@@ -6,10 +6,14 @@
 
   <script src="../dist/index.min.js"></script>
   <script>
-      window.ImgMin.g2etCDNUrl = ({url, width, quality}) => {
-        return `https://atzvkhhlen.cloudimg.io/width/${Math.floor(60/quality * width)}/n/${url}`
-      }
-    </script>
+    window.ImgMin.g2etCDNUrl = ({
+      url,
+      width,
+      quality
+    }) => {
+      return `https://atzvkhhlen.cloudimg.io/width/${Math.floor(60/quality * width)}/n/${url}`
+    }
+  </script>
   <style>
     .hero img-min {
       margin: 5vw 0;
@@ -35,25 +39,8 @@
       font-size: 0.9rem;
       line-height: 1.4;
       padding: 1rem;
-      overflow-x: scroll
-    }
-
-    q {
-      color: #fb49f9;
-      margin-top: 2em;
-      margin-bottom: 2em;
-      font-style: italic;
-      font-family: cursive;
-      padding-left: 2em;
-      font-size: 1.4em;
-    }
-
-    q::before {
-      content: '"';
-    }
-
-    q::after {
-      content: '"';
+      overflow-x: scroll;
+      box-sizing: border-box;
     }
 
     .list {
@@ -61,7 +48,13 @@
       margin-bottom: 4vh;
       display: grid;
       grid-gap: 4vw;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 600px) {
+      .list {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
 
@@ -83,15 +76,29 @@
       line-height: 1.6;
     }
 
-    body>*:not(.hero) {
-      width: 90%;
-      max-width: 800px;
-      margin: 0 auto;
+    body>.hero {
+      width: 100vw;
+      max-width: 100vw;
     }
 
-    h1+h2 {
+    body>img-min,
+    body>.list {
+      margin: 3em auto;
+      max-width: 850px;
+    }
+
+    body>* {
+      width: 90%;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    h2 {
       margin-top: 0;
-      color: gray;
+      color: #ababab;
+      font-weight: 500;
+      font-size: 1.2rem;
     }
 
     h3 {
@@ -101,100 +108,103 @@
 
     h1 {
       margin-top: 2em;
-      margin-bottom: 0.3em;
+      margin-bottom: 0.6em;
     }
 
     body {
-      margin: 10vh 0;
+      margin: 5vh 0;
       color: #333;
-      font-size: 110%;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-        Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-size: 95%;
+      font-family: Verdana, Geneva, sans-serif;
     }
   </style>
 </head>
 
 <body>
-  <h1>Minimal images</h1>
-  <h2>Tailormade images for each client</h2>
+  <h1>img-min</h1>
+  <h2>Responsive and lazy image web-component</h2>
   <div class="hero">
     <img-min src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=9e2448175103d36c873e2511d112d339&auto=format&fit=crop&w=1350&q=80"
-      quality="80">
+      quality="80" alt="Hero image">
     </img-min>
   </div>
-  <div>
-    <p>This is a demo page for <code>&lt;img-min&gt;</code> web-component.
-    </p>
-    <p>
-      Check it out on <a href="https://github.com/lipp/img-min">GitHub</a>.
-    </p>
+  <p>This is a demo page for <code>&lt;img-min&gt;</code> web-component. It is
+    a vanilla web-component / custom element with no dependencies.
+  </p>
+  <p>
+    Check it out on <a href="https://github.com/lipp/img-min">GitHub</a>.
+  </p>
+  <p>
+    The hero image above varies between <strong>17kb</strong> (iPhone 5/SE size) to
+    <strong>222kb</strong> (1400px MacBook Pro) to have a "good" visual impression.
+  </p>
 
-    <p>
-      <code>&lt;img-min&gt;</code> is intended to be a replacement for the
-      <code>&lt;img&gt;</code> tag to automatically request images with optimal size/quality ratio
-      in respect to every client. This can save clients easily hundreds or thousands
-      of KB.
-    </p>
-    <p><code>&lt;img-min&gt;</code> plays best with a CDN backed image resize/reformat microservice.
-      Fortunately it comes with a freely hosted implenetation.
-    </p>
+  <p>
+    <code>&lt;img-min&gt;</code> is intended to be a replacement for the
+    <code>&lt;img&gt;</code> tag to automatically request images with optimal size/quality ratio
+    in respect to every client. This can save clients easily hundreds or thousands
+    of KB.
+  </p>
+  <p><code>&lt;img-min&gt;</code> plays best with a CDN backed image resize/reformat microservice.
+    Fortunately it comes with a freely hosted implenetation.
+  </p>
 
 
-    <h3>Features</h3>
-    <ul>
-      <li><strong>Responsive</strong>: considers actual onscreen size</li>
-      <li><strong>Lazy loading</strong>: only load images close to the viewport</li>
-      <li><strong>Preview image</strong>: lowres for the bad connectivity</li>
-      <li><strong>WebP</strong>: Prefer WebP over JPEG when supported</li>
-      <li><strong>Dissolve effect</strong>: Cool effect for preview/highres transition</li>
-      <li><strong>Every CDN</strong>: Map to your image CDN with a hook</li>
-      <li><strong>Tiny</strong>: no deps, less than <em>2kb</em></li>
-    </ul>
-    <img-min src="https://images.unsplash.com/photo-1471931452361-f5ff1faa15ad?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=28757d8ffc81debd173255c51ed9c84a&auto=format&fit=crop&w=2104&q=80">
-    </img-min>
+  <h3>Features</h3>
+  <ul>
+    <li><strong>Responsive</strong>: considers actual onscreen size and dpi</li>
+    <li><strong>Lazy loading</strong>: only load images close to the viewport</li>
+    <li><strong>WebP</strong>: Prefer WebP over JPEG when supported</li>
+    <li><strong>Dissolve effect</strong>: Cool effect for preview/highres transition</li>
+    <li><strong>Every CDN</strong>: Map to your image CDN with a hook</li>
+    <li><strong>Tiny</strong>: no deps, less than <em>2kb</em></li>
+  </ul>
+  <img-min src="https://images.unsplash.com/photo-1471931452361-f5ff1faa15ad?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=28757d8ffc81debd173255c51ed9c84a&auto=format&fit=crop&w=2104&q=80">
+  </img-min>
 
-    <h3>Usage</h3>
-    <pre><code>&lt;script
+  <h3>Usage</h3>
+  <pre><code>&lt;script
   src="https://unpkg.com/@lipp/img-min@0.0.1/dist/index.min.js"
   &gt;
 &lt;/script&gt;
 
 &lt;img-min
   src="https://images.unsplash.com/..."
-  style="--aspect-ratio="15/10"
+  alt="Hero"
+  style="--aspect-ratio: 15/10"
   &gt;
 &lt;/img-min&gt;</code></pre>
-    <p>
-      It is used very similar to the good old <code>&lt;img&gt;</code> tag.
-    </p>
-    <p>
-      A <code>src</code> attribute to the "big" original image must be specified.
-    </p>
-    <p>
-      The CSS variable (custom property) <code>--aspect-ratio</code> is recommended
-      to prevent page layout jumping and to leverage visibility checking and
-      thus lazy loading. Every other means to make the image have a certain height
-      is also ok.
-    </p>
-    <h3>How / Image CDNs</h3>
-    <p>To use <code>&lt;img-min&gt;</code> a CDN backed image resize/reformat microservice
-      is required. There are many of these services out there and all of them
-      should be compatible. Their main job is to deliver resized / reformated images
-      very fast to the client. They do their task on-demand once and cache the result
-      and usually are really fast and globally distributed.
-    </p>
-    <p>
-      To name a few:
-    </p>
-    <ul>
-      <li><a href="https://www.imgix.com/">www.imgix.com</a></li>
-      <li><a href="https://www.cloudimage.io/en/home/">www.cloudimage.io</a></li>
-      <li><a href="https://cloudinary.com//">cloudinary.com</a></li>
-    </ul>
-    <p>When an image (placeholder) gets visible, a hook is called with detailed information supposed to
-      return a URL for this image.
-    </p>
-    <pre><code>window.ImgMin.getCDNUrl = ({
+  <p>
+    It is used very similar to the good old <code>&lt;img&gt;</code> tag.
+  </p>
+  <p>
+    A <code>src</code> attribute to the "big" original image must be specified.
+  </p>
+  <p>
+    The CSS variable (custom property) <code>--aspect-ratio</code> is recommended
+    to prevent page layout jumping and to leverage visibility checking and
+    thus lazy loading. Every other means to make the image have a certain height
+    is also ok.
+  </p>
+  <h3>Image CDNs</h3>
+  <p>To use <code>&lt;img-min&gt;</code> a CDN backed image resize/reformat microservice
+    is required. There are many of these services out there and all of them
+    should be compatible. Their job is to deliver resized / reformated images
+    as fast as possible to the client.
+  </p>
+  <p>
+    To name a few:
+  </p>
+  <ul>
+    <li><a href="https://www.imgix.com/">www.imgix.com</a></li>
+    <li><a href="https://www.cloudimage.io/en/home/">www.cloudimage.io</a></li>
+    <li><a href="https://cloudinary.com//">cloudinary.com</a></li>
+    <li><a href="https://cloudimg.io//">cloudimg.io</a></li>
+  </ul>
+  <p>When an image (placeholder) gets visible, a hook is called with detailed information supposed to
+    return a URL for this image.
+  </p>
+  <pre><code>window.ImgMin.getCDNUrl = ({
   url, // original image url (high res)
   width, // width on screen 
   height, // height on screen
@@ -203,105 +213,134 @@
     }) => {
   // return url to microservice / image CDN
 }</code></pre>
-    <p>This could be the code when using cloudimg.io:
-    </p>
-    <pre><code>window.ImgMin.getCDNUrl = ({url, width, quality}) => {
+  <p>cloudimg.io offers a free plan, which is awesome! WebP is not supported
+    so the hook looks like this:
+  </p>
+  <pre><code>window.ImgMin.getCDNUrl = ({url, width, quality}) => {
   return `https://atzvkhhlen.cloudimg.io/width/${Math.floor(60/quality * width)}/n/${url}`
 }</code></pre>
-    <p>
-      To build this demo, I created my own CDN backed image microservice, <a href="https://github.com/lipp/img-scale">img-scale</a>.
-      With the help of <a href="https://zeit.co">Zeit's now</a>
-      in less than 5o lines of code. It is the default method and free to use until I get chopped
-      by Zeit.co ;) .
-    </p>
+  <p>This is all code you need to use your custom CDN. This is also the spot where
+    you can implement image quality strategies. One can even think about guessing connection
+    speed and reduce image quality under certain conditions.
+  </p>
+  <img-min src="https://images.unsplash.com/photo-1465056836041-7f43ac27dcb5?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=3a9b9c9ff6f95eaeefbf643f25a31074&auto=format&fit=crop&w=2251&q=80"
+    quality="80">
+  </img-min>
+  <p>
+    To build this demo, I created my own CDN backed image microservice, <a href="https://github.com/lipp/img-scale">img-scale</a>.
+    With the help of <a href="https://zeit.co">Zeit's now</a>
+    in less than 5o lines of code. It is the default method and free to use until I get chopped
+    by Zeit.co ;) .
+  </p>
+
+  <h3>
+    Feedback welcomed
+  </h3>
+  <p>
+    This implementation is still very basic and I guess people would like to have more
+    customization options and other features or changes in API.
+
+    Your precious feedback is very welcomed, just create an <a href="https://github.com/lipp/img-min/issues">issue</a>.
+  </p>
 
 
-    <h3>Why</h3>
-    <p>
-      Page size is important for many respects and will probably stay
-      important forever. Images often times make up the biggest part of a
-      website's data delivered to the client. This article focuses on methods
-      to deliver images in sizes and formats which are best for each client
-      based on its viewport (screensize).
-    </p>
-    <div class="list">
-      <img-min src="https://images.unsplash.com/photo-1508144753681-9986d4df99b3?ixlib=rb-0.3.5&s=1d10d3fecaf170c5d764bd8e564eecd9&auto=format&fit=crop&w=1350&q=80">
-      </img-min>
+  <h3>Why</h3>
+  <p>
+    Page size is important for many respects and will probably stay
+    important forever. Images often times make up the biggest part of a
+    website's data delivered to the client. This article focuses on methods
+    to deliver images in sizes and formats which are best for each client
+    based on its viewport (screensize).
+  </p>
+  <div class="list">
+    <img-min src="https://images.unsplash.com/photo-1508144753681-9986d4df99b3?ixlib=rb-0.3.5&s=1d10d3fecaf170c5d764bd8e564eecd9&auto=format&fit=crop&w=1350&q=80">
+    </img-min>
 
-      <img-min src="https://images.unsplash.com/photo-1506318164473-2dfd3ede3623?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d7aca7e915a70f426aa75aacaa56c6d0&auto=format&fit=crop&w=1350&q=80">
-    </div>
-    <p>
-      The hero image you see above varies between 8kb (iPhone 5/SE size) to
-      113kb (typical Desktop) to have a "good" visual impression using WebP.
-    </p>
-    <p>
-      Delivering minimal images isn't trivial. This usually involves uploading
-      and serving them in different sizes over a CDN and writing media queries
-      for certain breakpoints. As developer and/or content contributor it can
-      be easy to forget to do all the steps required.
-    </p>
-    <div class="list">
-      <img-min src="https://images.unsplash.com/photo-1484599379766-aa5e119b0066?ixlib=rb-0.3.5&s=dc0107a6f996194f0321d9ee2ea95112&auto=format&fit=crop&w=1350&q=80">
-      </img-min>
+    <img-min src="https://images.unsplash.com/photo-1506318164473-2dfd3ede3623?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d7aca7e915a70f426aa75aacaa56c6d0&auto=format&fit=crop&w=1350&q=80">
+  </div>
+  <p>
+    Delivering minimal images isn't trivial. This usually involves uploading
+    and serving them in different sizes over a CDN and writing media queries
+    for certain breakpoints. As developer and/or content contributor it can
+    be easy to forget to do all the steps required.
+  </p>
+  <div class="list">
+    <img-min src="https://images.unsplash.com/photo-1484599379766-aa5e119b0066?ixlib=rb-0.3.5&s=dc0107a6f996194f0321d9ee2ea95112&auto=format&fit=crop&w=1350&q=80">
+    </img-min>
 
-      <img-min src="https://images.unsplash.com/photo-1518670921540-7c4e09a4408e?ixlib=rb-0.3.5&s=508cfd3484756ce9bfedc31496131e38&auto=format&fit=crop&w=1350&q=80">
-      </img-min>
-    </div>
-    <p>
-      Further, different clients might support different images formats. WebP
-      for instance offers "better" compression but is not supported by all
-      browsers. This can multiply the effort.
-    </p>
-    <p>
-      Things get more complicated when RWD layouts causes images to get
-      displayed larger on smaller devices. The images below get stacked on
-      smaller devices and might actually require a bigger image to look crisp.
-      Handling this with media queries can get messy.
-    </p>
-    <h3>Lorem ipsum</h3>
-    <p>
-      Contrary to popular belief, Lorem Ipsum is not simply random text. It
-      has roots in a piece of classical Latin literature from 45 BC, making it
-      over 2000 years old. Richard McClintock, a Latin professor at
-      Hampden-Sydney College in Virginia, looked up one of the more obscure
-      Latin words, consectetur, from a Lorem Ipsum passage, and going through
-      the cites of the word in classical literature, discovered the
-      undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33
-      of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by
-      Cicero, written in 45 BC. This book is a treatise on the theory of
-      ethics, very popular during the Renaissance. The first line of Lorem
-      Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section
-      1.10.32.
-    </p>
+    <img-min src="https://images.unsplash.com/photo-1518670921540-7c4e09a4408e?ixlib=rb-0.3.5&s=508cfd3484756ce9bfedc31496131e38&auto=format&fit=crop&w=1350&q=80">
+    </img-min>
+  </div>
+  <p>
+    Further, different clients might support different images formats. WebP
+    for instance offers "better" compression but is not supported by all
+    browsers. This can multiply the effort.
+  </p>
+  <p>
+    Things get more complicated when RWD layouts causes images to get
+    displayed larger on smaller devices. The images below get stacked on
+    smaller devices and might actually require a bigger image to look crisp.
+    Handling this with media queries can get messy.
+  </p>
+  <h3>Browser Support</h3>
+  <p>
+    The basic requirement for <code>&lt;img-min&gt;</code> is support for web-components
+    aka custom elements. Checkout support on <a href="http://caniuse.com/#feat=custom-elementsv1">caniuse.com</a>.
+    At the time of this writing the working major browsers are:
+  </p>
+  <ul>
+    <li><strong>Chrome</strong></li>
+    <li><strong>Safari</strong></li>
+    <li><strong>Firefox (no fancy previews)</strong></li>
+  </ul>
 
-    <div class="hero">
-      <img-min aspect="" src="https://images.unsplash.com/photo-1542836780-7f74748c7562?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=9d889635475db8bcf1aca77a74dd9355&auto=format&fit=crop&w=1350&q=80">
-      </img-min>
-    </div>
-    <p>
-      There are many variations of passages of Lorem Ipsum available, but the
-      majority have suffered alteration in some form, by injected humour, or
-      randomised words which don't look even slightly believable. If you are
-      going to use a passage of Lorem Ipsum, you need to be sure there isn't
-      anything embarrassing hidden in the middle of text. All the Lorem Ipsum
-      generators on the Internet tend to repeat predefined chunks as necessary,
-      making this the first true generator on the Internet. It uses a dictionary
-      of over 200 Latin words, combined with a handful of model sentence
-      structures, to generate Lorem Ipsum which looks reasonable. The generated
-      Lorem Ipsum is therefore always free from repetition, injected humour, or
-      non-characteristic words etc.
-    </p>
-    <div class="list">
-      <img-min src="https://images.unsplash.com/photo-1501254667263-b4867b4f7482?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=25029f01929d9b9fc974563e69c15393&auto=format&fit=crop&w=1350&q=80">
-      </img-min>
+  The only big missing is Edge.
 
-      <img-min src="https://images.unsplash.com/photo-1422004707501-e8dad229e17a?ixlib=rb-0.3.5&s=6cb641f77892c1e7fcc9611b8a600852&auto=format&fit=crop&w=1353&q=80">
-      </img-min>
-      <img-min src="https://images.unsplash.com/photo-1443890923422-7819ed4101c0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=4f18acb8db93abc281f66dcfd2ad9e61&auto=format&fit=crop&w=1350&q=80">
-      </img-min>
-      <img-min src="https://images.unsplash.com/photo-1536040033249-c3308d07b033?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b22f3b47018472fc148c87615f0b1b3f&auto=format&fit=crop&w=1351&q=80">
-      </img-min>
-    </div>
+  <h3>Some more images</h3>
+  <p>Scroll and watch images get lazy loaded.</p>
+  <p>
+    Contrary to popular belief, Lorem Ipsum is not simply random text. It
+    has roots in a piece of classical Latin literature from 45 BC, making it
+    over 2000 years old. Richard McClintock, a Latin professor at
+    Hampden-Sydney College in Virginia, looked up one of the more obscure
+    Latin words, consectetur, from a Lorem Ipsum passage, and going through
+    the cites of the word in classical literature, discovered the
+    undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33
+    of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by
+    Cicero, written in 45 BC. This book is a treatise on the theory of
+    ethics, very popular during the Renaissance. The first line of Lorem
+    Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section
+    1.10.32.
+  </p>
+
+  <div class="hero">
+    <img-min aspect="" src="https://images.unsplash.com/photo-1542836780-7f74748c7562?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=9d889635475db8bcf1aca77a74dd9355&auto=format&fit=crop&w=1350&q=80">
+    </img-min>
+  </div>
+  <p>
+    There are many variations of passages of Lorem Ipsum available, but the
+    majority have suffered alteration in some form, by injected humour, or
+    randomised words which don't look even slightly believable. If you are
+    going to use a passage of Lorem Ipsum, you need to be sure there isn't
+    anything embarrassing hidden in the middle of text. All the Lorem Ipsum
+    generators on the Internet tend to repeat predefined chunks as necessary,
+    making this the first true generator on the Internet. It uses a dictionary
+    of over 200 Latin words, combined with a handful of model sentence
+    structures, to generate Lorem Ipsum which looks reasonable. The generated
+    Lorem Ipsum is therefore always free from repetition, injected humour, or
+    non-characteristic words etc.
+  </p>
+  <div class="list">
+    <img-min src="https://images.unsplash.com/photo-1501254667263-b4867b4f7482?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=25029f01929d9b9fc974563e69c15393&auto=format&fit=crop&w=1350&q=80">
+    </img-min>
+
+    <img-min src="https://images.unsplash.com/photo-1422004707501-e8dad229e17a?ixlib=rb-0.3.5&s=6cb641f77892c1e7fcc9611b8a600852&auto=format&fit=crop&w=1353&q=80">
+    </img-min>
+    <img-min src="https://images.unsplash.com/photo-1443890923422-7819ed4101c0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=4f18acb8db93abc281f66dcfd2ad9e61&auto=format&fit=crop&w=1350&q=80">
+    </img-min>
+    <img-min src="https://images.unsplash.com/photo-1536040033249-c3308d07b033?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b22f3b47018472fc148c87615f0b1b3f&auto=format&fit=crop&w=1351&q=80">
+    </img-min>
+  </div>
 </body>
 
 </html>
