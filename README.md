@@ -77,7 +77,7 @@ window.ImgMin.getCDNUrl = ({
 ```
 <custom-element-demo>
   <template>
-    <script src="dist/index.min.js"></script>
+    <script src="https://unpkg.com/@lipp/img-min"></script>
   </template>
 </custom-element-demo>
 ```
