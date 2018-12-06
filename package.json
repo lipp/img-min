@@ -1,6 +1,6 @@
 {
   "name": "@lipp/img-min",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A web component for minimal, responsive and lazy images for webp and jpeg",
   "keywords": [
     "img",

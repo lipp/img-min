@@ -1,10 +1,10 @@
 # `<img-min>`
 
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/owner/my-element)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/lipp/img-min)
 
 `<img-min>` is a zero dependency vanilla web-component / custom element which can help you and your users to save a lot of bandwidth. It lazy loads minimal responsive images with auto-thumbnail and cool dissolve effect inspired by Medium.
 
-For more info and a live demo checkout [img-min.now.sh]](https://img-min.now.sh) or start playing with the [codepen.io](https://codepen.io/lipp/pen/Rqerbq).
+For more info and a live demo checkout [img-min.now.sh](https://img-min.now.sh) or start playing with the [codepen.io](https://codepen.io/lipp/pen/Rqerbq).
 
 - **Responsive**: considers actual onscreen size and dpi
 - **Lazy loading**: oly load images when they are/get visible
